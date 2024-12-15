@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<save>
+    <version major="4" minor="7" revision="1" build="3"/>
+    <region id="MetaData">
+        <node id="root">
+            <attribute id="GameProject" type="LSString" value=""/>
+            <attribute id="Module" type="LSString" value="17a71ed8-65b7-84d7-05f1-4d2d64edd967"/>
+            <attribute id="Name" type="LSString" value="AutoWares"/>
+            <attribute id="UUID" type="LSString" value="a1b4fbe6-425e-4a4d-d935-b7450355261d"/>
+            <children>
+                <node id="Categories"/>
+            </children>
+        </node>
+    </region>
+</save>
