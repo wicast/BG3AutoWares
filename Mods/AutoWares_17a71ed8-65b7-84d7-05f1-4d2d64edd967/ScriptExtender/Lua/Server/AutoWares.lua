@@ -1,7 +1,8 @@
+MagicWaresChestTemplate_UUID = "DEC_Dungeon_Skeleton_Ribcage_A_Bloody_A_254096e8-fb58-46e4-9d85-29a8f92f78e6"
+
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTemplate, _Object, _InventoryHolder, _AddType)
-    -- if Ext.Entity.Get(_InventoryHolder) == _C() then
-    if IsPartyMember(_InventoryHolder, 1) ~= 0 then
-        MagicWaresChest = GetItemByTemplateInPartyInventory("DEC_Dungeon_Skeleton_Ribcage_A_Bloody_A_254096e8-fb58-46e4-9d85-29a8f92f78e6", _InventoryHolder)
+    if IsItem(_Object) ~= 0 and IsPartyMember(_InventoryHolder, 0) ~= nil and IsPartyMember(_InventoryHolder, 0) ~=0 then
+        MagicWaresChest = GetItemByTemplateInPartyInventory(MagicWaresChestTemplate_UUID, _InventoryHolder)
         if TemplateIsInInventory(_ObjectTemplate, MagicWaresChest) ~= 0 then
             _P("Add Obj".. _Object .. "To Wares")
             local Obj = Ext.Entity.Get(_Object)
