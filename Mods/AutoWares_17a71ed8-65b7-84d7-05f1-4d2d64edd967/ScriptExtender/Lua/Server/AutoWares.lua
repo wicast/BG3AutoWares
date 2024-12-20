@@ -1,9 +1,13 @@
-MagicWaresChestTemplate_UUID = "DEC_Dungeon_Skeleton_Ribcage_A_Bloody_A_254096e8-fb58-46e4-9d85-29a8f92f78e6"
+-- MagicWareChest For Filtering Items
+MagicWaresChestTemplate_UUID = "DEC_Dungeon_Skeleton_Ribcage_A_Bloody_A_MagicWares_01b9fb82-1739-4075-815b-f5d11d764e1c"
 
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTemplate, _Object, _InventoryHolder, _AddType)
     if IsItem(_Object) ~= 0 and IsPartyMember(_InventoryHolder, 0) ~= nil and IsPartyMember(_InventoryHolder, 0) ~=0 then
         MagicWaresChest = GetItemByTemplateInPartyInventory(MagicWaresChestTemplate_UUID, _InventoryHolder)
-        if TemplateIsInInventory(_ObjectTemplate, MagicWaresChest) ~= 0 then
+        if MagicWaresChest == nil then
+            return
+        end
+        if TemplateIsInInventory(_ObjectTemplate, MagicWaresChest) ~= nil and TemplateIsInInventory(_ObjectTemplate, MagicWaresChest) ~= 0 then
             _P("Add Obj".. _Object .. "To Wares")
             local Obj = Ext.Entity.Get(_Object)
             -- both are working
@@ -21,6 +25,9 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
     end
 end)
 
+-- TODO Move The MagicChest When Character Is Leave
+
+-- Debug Utils
 function GetInvenStore()
     if next(Inven) == nil then
         _P("GetInvenStore Empty")
@@ -46,6 +53,30 @@ function AW_GetTemplate()
    _P(GetTemplate("LOOT_GEN_Backpack_C_Posed_A_000_dd6f63d4-7092-80ba-3f40-83849eb6655e"))
 end
 
+function AW_DoAny()
+    local eee =GetItemByTemplateInPartyInventory(MagicWaresChestTemplate_UUID, GetHostCharacter())
+    local obj = Ext.Entity.Get(eee)
+    obj.InventoryWeight.Weight = 1
+
+    -- local obj = Ext.Entity.Get("CONT_Barrel_Brine_A_626cbf89-51d0-4d9f-99bd-c9e26ca6abed")
+    -- _D(obj:GetAllComponents())
+    -- obj.ServerBaseData.Weight = 1
+    -- obj.Data.Weight = 1
+    -- _D(obj.ServerBaseData.Weight)
+    -- _D(obj.Data.Weight)
+    
+    -- _D(obj.InventoryWeight.Weight)
+    Osi.IterateInventory(eee, "AW_ITER_InvDoAny", "AW_ITER_InvDoAny_COMP")
+end
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
+    if _Event == "AW_ITER_InvDoAny" then
+        local Obj = Ext.Entity.Get(_Object)
+        Obj.ServerBaseData.Weight = 1
+        Obj.Data.Weight = 1
+    end
+end)
+
 Ext.RegisterConsoleCommand("StoreInv", IterInvent)
 Ext.RegisterConsoleCommand("GetInv", GetInvenStore)
 Ext.RegisterConsoleCommand("GetTemplateDbg", AW_GetTemplate)
+Ext.RegisterConsoleCommand("Doit", AW_DoAny)
