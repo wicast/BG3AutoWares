@@ -2,6 +2,12 @@
 MagicWareChestTemplate_UUID = "DEC_Dungeon_Skeleton_Ribcage_A_Bloody_A_AW_MagicWares_01b9fb82-1739-4075-815b-f5d11d764e1c"
 RefreshWeightDummy = "LOOT_GEN_Autopsy_Jar_Tadpoles_B_AW_RefreshWeightDummy_083f48a7-1727-4e57-88ea-e393c305eb0a"
 
+local function ZeroObjectWeightPrice(_Object) 
+    local Obj = Ext.Entity.Get(_Object)
+    Obj.Data.Weight = 0
+    Obj.Value.Value = 0
+end
+
 -- Check If WareChest exist in party
 Ext.Osiris.RegisterListener("LevelLoaded", 1, "after", function(_Level) -- Don't use SavegameLoaded
     local MagicChest = GetItemByTemplateInPartyInventory(MagicWareChestTemplate_UUID, GetHostCharacter())
@@ -9,22 +15,23 @@ Ext.Osiris.RegisterListener("LevelLoaded", 1, "after", function(_Level) -- Don't
         TimerLaunch("AW_GiveAMagicWareChest", 0)
     else 
         local MagicChestObj = Ext.Entity.Get(MagicChest)
-        MagicChestObj.InventoryWeight.Weight = 1
-        MagicChestObj.Data.Weight = 1
+        MagicChestObj.InventoryWeight.Weight = 0
+        MagicChestObj.Data.Weight = 0
+        MagicChestObj.Value.Value = 0
+
         Osi.IterateInventory(MagicChest, "AW_SetMagicChestWeight", "AW_SetMagicChestWeight_DONE")
     end
 end)
 -- Give a MagicChest
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_GiveAMagicWareChest" then
-        TemplateAddTo(MagicWareChestTemplate_UUID, GetHostCharacter(),1)
+        TemplateAddTo(MagicWareChestTemplate_UUID, GetHostCharacter(), 1)
     end
 end)
 -- Make the chest no weight
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
     if _Event == "AW_SetMagicChestWeight" then
-        local Obj = Ext.Entity.Get(_Object)
-        Obj.Data.Weight = 1
+        ZeroObjectWeightPrice(_Object)
     end
 end)
 -- Refresh weight who carrying the chest
@@ -78,11 +85,8 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
         return
     end
 
-    local Holder = Ext.Entity.Get(_InventoryHolder)
-    Holder.Data.Weight = 1
-    local Obj = Ext.Entity.Get(_Object)
-    Obj.ServerBaseData.Weight = 1
-    Obj.Data.Weight = 1
+    ZeroObjectWeightPrice(_InventoryHolder)
+    ZeroObjectWeightPrice(_Object)
     TemplateAddTo(_ObjectTemplate, _InventoryHolder, 1)
 end)
 Ext.Osiris.RegisterListener("RemovedFrom", 2, "after", function(_Object, _InventoryHolder)
