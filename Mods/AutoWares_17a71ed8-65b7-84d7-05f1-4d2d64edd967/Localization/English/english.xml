@@ -1,5 +1,20 @@
 <?xml version="1.0"?>
 <contentList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <content contentuid="h44058b0ag931fg8313gac97g0e771cab9e6f" version="1">Ribcage</content>
-  <content contentuid="hc18baa0cg4013g6ea7g81c8g64c976ab24d3" version="1">Fastidiously separated from the rest of the skeleton and cleaned of flesh and organs.</content>
+  <content contentuid="h44058b0ag931fg8313gac97g0e771cab9e6f" version="6">Magic Ware Chest</content>
+  <content contentuid="hc18baa0cg4013g6ea7g81c8g64c976ab24d3" version="6">Put ware samples inside me!</content>
+  <content contentuid="hf0cf88c2g3af8gbe08g5869g1eb601a7f18d" version="1">Soap Bar</content>
+  <content contentuid="h6d7e02b0g6f98ge461ga781ge4e258ac1279" version="1">Use</content>
+  <content contentuid="h9984e9aeg6751g993eg3864g64408bac53bd" version="1">Using this will clean off dirt, blood, and face-paint, and will remove conditions that make you smell.</content>
+  <content contentuid="hcc6d16dag95b1g4099gc63dg39338ba49e41" version="1">This object is using for refresh inventory weight, if you are seeing it, this is a bug</content>
+  <content contentuid="hc9bb4753g7888g9942g7988g8e585767262e" version="1">Soap Bar</content>
+  <content contentuid="hf8cc15d2g9e92gd88dg8615ga65677368cbe" version="1">Use</content>
+  <content contentuid="hc5f85474gdd5egaf51gd32cg96c05b308ffe" version="1">Using this will clean off dirt, blood, and face-paint, and will remove conditions that make you smell.</content>
+  <content contentuid="h78064cdeg1022g4148gc380g2198ea1a25b8" version="1">This item is using for refresh the weight of MagicWaresChest. If you are seeing the, this is a bug!!</content>
+  <content contentuid="h3143853fg8442g89ecgf451g9eb5f23794aa" version="2">MagicWare Soap Bar</content>
+  <content contentuid="h74938893gdca4g5dfcg4e66g2f438bd5be19" version="2">Use</content>
+  <content contentuid="h91cd1da3gcc2bg7fcdg1b7eg9586c1951c42" version="2">This is a bug! This is a bug!</content>
+  <content contentuid="h614cb3ecgfca7ga24bgb286gfd4ce5e1ac75" version="2">This is used for refreshing the weight of MagicWareChest, if you seeing the soap, this is a bug!</content>
+  <content contentuid="hbe08f472g6f87g4b6dg59fag19d4de1c62c2" version="3">MagicWare Mind Flayer Parasite</content>
+  <content contentuid="he1f1ec10g0bd9ge833g5874g973013aa9bc0" version="2">This is used for refreshing the weight of MagicWareChest, if you seeing the soap, this is a bug!</content>
+  <content contentuid="h4d7fb5adgdaa2g20d2g4ee2g6e495a4b5536" version="1">This is a bug! This is a bug!</content>
 </contentList>
