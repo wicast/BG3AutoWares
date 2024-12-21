@@ -21,10 +21,10 @@
                     <attribute id="Author" type="LSString" value="wicastC"/>
                     <attribute id="CharacterCreationLevelName" type="FixedString" value=""/>
                     <attribute id="Description" type="LSString" value="Automatically set your loot to wares."/>
-                    <attribute id="FileSize" type="uint64" value="20187825"/>
+                    <attribute id="FileSize" type="uint64" value="9893"/>
                     <attribute id="Folder" type="LSString" value="AutoWares_17a71ed8-65b7-84d7-05f1-4d2d64edd967"/>
                     <attribute id="LobbyLevelName" type="FixedString" value=""/>
-                    <attribute id="MD5" type="LSString" value="cbbd03abbbc964a727c4f0cdfcbbcbb6"/>
+                    <attribute id="MD5" type="LSString" value="e32278e032dbbb2c2fe4c8ea36a3273f"/>
                     <attribute id="MenuLevelName" type="FixedString" value=""/>
                     <attribute id="Name" type="LSString" value="AutoWares"/>
                     <attribute id="NumPlayers" type="uint8" value="4"/>
@@ -32,7 +32,7 @@
                     <attribute id="PublishHandle" type="uint64" value="0"/>
                     <attribute id="StartupLevelName" type="FixedString" value=""/>
                     <attribute id="UUID" type="FixedString" value="17a71ed8-65b7-84d7-05f1-4d2d64edd967"/>
-                    <attribute id="Version64" type="int64" value="36028797018963976"/>
+                    <attribute id="Version64" type="int64" value="36028797018963981"/>
                     <children>
                         <node id="PublishVersion">
                             <attribute id="Version64" type="int64" value="144255927717549775"/>

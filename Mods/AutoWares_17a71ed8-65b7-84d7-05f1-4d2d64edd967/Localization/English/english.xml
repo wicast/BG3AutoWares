@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <contentList xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <content contentuid="h44058b0ag931fg8313gac97g0e771cab9e6f" version="6">Magic Ware Chest</content>
-  <content contentuid="hc18baa0cg4013g6ea7g81c8g64c976ab24d3" version="6">Put ware samples inside me!</content>
+  <content contentuid="h44058b0ag931fg8313gac97g0e771cab9e6f" version="8">Magic Ware Chest</content>
+  <content contentuid="hc18baa0cg4013g6ea7g81c8g64c976ab24d3" version="8">Put ware samples inside me!</content>
   <content contentuid="hf0cf88c2g3af8gbe08g5869g1eb601a7f18d" version="1">Soap Bar</content>
   <content contentuid="h6d7e02b0g6f98ge461ga781ge4e258ac1279" version="1">Use</content>
   <content contentuid="h9984e9aeg6751g993eg3864g64408bac53bd" version="1">Using this will clean off dirt, blood, and face-paint, and will remove conditions that make you smell.</content>

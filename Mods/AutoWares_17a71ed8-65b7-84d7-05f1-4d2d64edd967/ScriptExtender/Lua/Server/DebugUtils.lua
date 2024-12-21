@@ -47,7 +47,24 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
     end
 end)
 
+function FixWareGolds()
+    Osi.IterateInventory(GetHostCharacter(), "AW_FixWareGolds", "AW_FixWareGolds_DONE")
+end
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
+    if _Event == "AW_FixWareGolds" then
+        local Obj = Ext.Entity.Get(_Object)
+        Obj.ServerItem.DontAddToHotbar = false
+    end
+end)
+
+local function AWGetTemplate(cmd, _Object, ...)
+    -- TODO this is useless
+    _P(GetTemplate(_Object))
+end
+
 Ext.RegisterConsoleCommand("StoreInv", IterInvent)
 Ext.RegisterConsoleCommand("GetInv", GetInvenStore)
 Ext.RegisterConsoleCommand("GetTemplateDbg", AW_GetTemplate)
 Ext.RegisterConsoleCommand("Doit", AW_DoAny)
+Ext.RegisterConsoleCommand("FixWareGolds", FixWareGolds)
+Ext.RegisterConsoleCommand("AWGetTemplate", AWGetTemplate)
