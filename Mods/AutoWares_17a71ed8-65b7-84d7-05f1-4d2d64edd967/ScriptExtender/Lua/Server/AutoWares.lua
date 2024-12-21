@@ -7,15 +7,6 @@ ObjTemplateBlackList = {
                         "DLC_DD_Clothing_Chest_8a1f5dc0-3f13-47ed-b238-50fdcaa2f680"
                     }
 
-local function MarkObjectWareSample(_Object) 
-    local Obj = Ext.Entity.Get(_Object)
-    Obj.Data.Weight = 0
-    Obj.Value.Value = 0
-    if Obj.Use ~= nil then
-        Obj.Use.ItemUseBlocked = 1
-    end
-end
-
 local function IsBlackList(_Object)
     local Obj = Ext.Entity.Get(_Object)
     if Obj ~= nil and (Obj.ServerItem.Flags & "StoryItem") ~= {} then
@@ -31,6 +22,19 @@ local function IsBlackList(_Object)
     end
 
     return false
+end
+
+local function MarkObjectWareSample(_Object)
+    if IsBlackList(_Object) then
+        return
+    end
+    -- _D("MarkObjectWareSample:".._Object)
+    local Obj = Ext.Entity.Get(_Object)
+    Obj.Data.Weight = 0
+    Obj.Value.Value = 0
+    if Obj.Use ~= nil then
+        Obj.Use.ItemUseBlocked = 1
+    end
 end
 
 -- Check If WareChest exist in party
@@ -88,22 +92,15 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
         if MagicWareChest == nil or IsBlackList(_Object) then
             return
         end
-        if TemplateIsInInventory(_ObjectTemplate, MagicWareChest) ~= nil and TemplateIsInInventory(_ObjectTemplate, MagicWareChest) ~= 0 then
-            _P("Add Obj:".. _Object .. " To Wares, AddType:".._AddType)
+        if TemplateIsInInventory(_ObjectTemplate, MagicWareChest) ~= nil 
+            and TemplateIsInInventory(_ObjectTemplate, MagicWareChest) ~= 0
+            and IsInInventoryOf(_Object, MagicWareChest) == 0 then
+            -- _P("Add Obj:".. _Object .. " To Wares, AddType:".._AddType)
             local Obj = Ext.Entity.Get(_Object)
             -- both are working
             Obj.ServerItem.DontAddToHotbar = true
             -- Obj.ServerItem.Flags = Obj.ServerItem.Flags | "DontAddToHotbar"
-
-            Osi.IterateInventory(MagicWareChest, "AW_OnCleanWareInMagicWareChest", "AW_OnCleanWareInMagicWareChest_DONE")
         end
-    end
-end)
--- Clean The WareFlag That Put In MagicWareChest
-Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
-    if _Event == "AW_OnCleanWareInMagicWareChest" then
-        local Obj = Ext.Entity.Get(_Object)
-        Obj.ServerItem.DontAddToHotbar = false
     end
 end)
 
@@ -131,7 +128,7 @@ Ext.Osiris.RegisterListener("RemovedFrom", 2, "after", function(_Object, _Invent
             return
         end
 
-        _D("Delete:".._Object)
+        -- _D("Delete:".._Object)
         RequestDelete(_Object)
     end
 end)
