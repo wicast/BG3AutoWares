@@ -138,7 +138,7 @@ Ext.Osiris.RegisterListener("RemovedFrom", 2, "after", function(_Object, _Invent
     local ObjTemplate = GetTemplate(_Object)
     if MagicWareChestTemplate_UUID == ObjTemplate 
         and GetItemByTemplateInPartyInventory(MagicWareChestTemplate_UUID, GetHostCharacter()) == nil then
-            ToInventory(_Object, GetHostCharacter(), 1, 0, 1)
+            ToInventory(_Object, _InventoryHolder, 1, 0, 1)
     end
 end)
 Ext.Osiris.RegisterListener("CharacterLeftParty", 1, "before", function(_Character)
