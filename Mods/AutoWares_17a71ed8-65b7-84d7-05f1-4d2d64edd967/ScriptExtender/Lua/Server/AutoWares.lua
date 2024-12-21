@@ -96,4 +96,15 @@ Ext.Osiris.RegisterListener("RemovedFrom", 2, "after", function(_Object, _Invent
     end
 end)
 
--- TODO Move The MagicChest When Character Is Leave
+-- Prevent MagicChest from removing
+Ext.Osiris.RegisterListener("RemovedFrom", 2, "after", function(_Object, _InventoryHolder)
+    local ObjTemplate = GetTemplate(_Object)
+    if MagicWareChestTemplate_UUID == ObjTemplate 
+        and GetItemByTemplateInPartyInventory(MagicWareChestTemplate_UUID, GetHostCharacter()) == nil then
+            ToInventory(_Object, GetHostCharacter(), 1, 0, 1)
+    end
+end)
+Ext.Osiris.RegisterListener("CharacterLeftParty", 1, "before", function(_Character)
+    local MagicChest = GetItemByTemplateInInventory(MagicWareChestTemplate_UUID, _Character)
+    ToInventory(MagicChest, GetHostCharacter(), 1, 0, 1)
+end)
