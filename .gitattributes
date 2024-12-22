@@ -1,3 +1,4 @@
 *.lsf filter=lfs diff=lfs merge=lfs -text
 *.lsb filter=lfs diff=lfs merge=lfs -text
 *.gr2 filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
