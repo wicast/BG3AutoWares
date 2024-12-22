@@ -111,15 +111,15 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
     if MagicWareChestTemplate_UUID ~= HolderTemplate then
         return
     end
+    local amount = GetStackAmount(_Object)
     if IsBlackList(_Object) or IsItem(_Object) == 0 then
-        local amount = GetStackAmount(_Object)
         ToInventory(_Object, GetHostCharacter(), amount, 0, 1)
         _D("BlackListObj: " .. _Object .." Entering!")
         return
     end
     -- _D("Copy:".. _Object.." Template:".._ObjectTemplate)
     MarkObjectWareSample(_Object)
-    TemplateAddTo(_ObjectTemplate, GetHostCharacter(), 1)
+    TemplateAddTo(_ObjectTemplate, GetHostCharacter(), amount)
 end)
 Ext.Osiris.RegisterListener("RemovedFrom", 2, "after", function(_Object, _InventoryHolder)
     local HolderTemplate = GetTemplate(_InventoryHolder)
