@@ -54,7 +54,15 @@ end)
 -- Give a MagicChest
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_GiveAMagicWareChest" then
-        TemplateAddTo(MagicWareChestTemplate_UUID, GetHostCharacter(), 1)
+        -- This is necessary for leaving prologue
+        TimerLaunch("AW_CheckMagicChestCount", 10)
+    end
+end)
+Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
+    if _Event == "AW_CheckMagicChestCount" then
+        if TemplateIsInInventory(MagicWareChestTemplate_UUID, GetHostCharacter()) < 1 then
+            TemplateAddTo(MagicWareChestTemplate_UUID, GetHostCharacter(), 1)
+        end
     end
 end)
 -- Make the chest no weight
