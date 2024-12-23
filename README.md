@@ -1,3 +1,5 @@
+**WARNING!!!! This is a beta version, please make backups for your saves.**
+
 # BG3 Auto Wares
 Automatically set junks to wares on your choice!
 
