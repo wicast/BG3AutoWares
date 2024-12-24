@@ -62,9 +62,27 @@ local function AWGetTemplate(cmd, _Object, ...)
     _P(GetTemplate(_Object))
 end
 
+local function GetMagicChestItems()
+    local Chest = GetItemByTemplateInPartyInventory(MagicWareChestTemplate_UUID, GetHostCharacter())
+    -- _D(Chest.." exist, start iter")
+    Osi.IterateInventory(Chest, "AW_DEBUG_GetAllInTheChest", "AW_DEBUG_GetAllInTheChest_DONE")
+end
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
+    if _Event == "AW_DEBUG_GetAllInTheChest" then
+        _D(_Object)
+    end
+end)
+
+
+local function GetChest()
+    local Chest = GetItemByTemplateInPartyInventory(MagicWareChestTemplate_UUID, GetHostCharacter())
+    _D(Chest)
+end
+
 Ext.RegisterConsoleCommand("StoreInv", IterInvent)
 Ext.RegisterConsoleCommand("GetInv", GetInvenStore)
 Ext.RegisterConsoleCommand("GetTemplateDbg", AW_GetTemplate)
 Ext.RegisterConsoleCommand("Doit", AW_DoAny)
 Ext.RegisterConsoleCommand("FixWareGolds", FixWareGolds)
-Ext.RegisterConsoleCommand("AWGetTemplate", AWGetTemplate)
+Ext.RegisterConsoleCommand("AWGetChest", GetChest)
+Ext.RegisterConsoleCommand("AWChestItems", GetMagicChestItems)
