@@ -8,7 +8,7 @@ ObjTemplateBlackList = {
                     }
 
 CleanStackQueue = {}
-bAddFromStackRemains = false
+bStopCloneDummy = false
 
 local function IsBlackList(_Object)
     local Obj = Ext.Entity.Get(_Object)
@@ -183,8 +183,8 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
         return
     end
 
-    if bAddFromStackRemains then
-        bAddFromStackRemains = false
+    if bStopCloneDummy then
+        bStopCloneDummy = false
         return
     end
 
@@ -226,7 +226,7 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
             RequestDelete(Item)
         end
         if exists == amount then
-            bAddFromStackRemains = true
+            bStopCloneDummy = true
             -- _D("Object:"..Item.."Fullstack")
             TemplateAddTo(_ObjectTemplate, MagicChest, 1, 0)
         end
