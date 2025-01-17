@@ -25,7 +25,7 @@ function AW_GetTemplate()
 end
 
 function AW_DoAny()
-    local eee =GetItemByTemplateInPartyInventory(MagicWareChestTemplate_UUID, GetHostCharacter())
+    local eee =AW_GetMagicChest()
     local obj = Ext.Entity.Get(eee)
     obj.InventoryWeight.Weight = 1
 
@@ -63,7 +63,7 @@ local function AWGetTemplate(cmd, _Object, ...)
 end
 
 local function GetMagicChestItems()
-    local Chest = GetItemByTemplateInPartyInventory(MagicWareChestTemplate_UUID, GetHostCharacter())
+    local Chest = AW_GetMagicChest()
     -- _D(Chest.." exist, start iter")
     Osi.IterateInventory(Chest, "AW_DEBUG_GetAllInTheChest", "AW_DEBUG_GetAllInTheChest_DONE")
 end
@@ -75,7 +75,7 @@ end)
 
 
 local function GetChest()
-    local Chest = GetItemByTemplateInPartyInventory(MagicWareChestTemplate_UUID, GetHostCharacter())
+    local Chest = AW_GetMagicChest()
     _D(Chest)
 end
 
