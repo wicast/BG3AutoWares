@@ -36,8 +36,12 @@ local function MarkObjectWareSample(_Object)
     local Obj = Ext.Entity.Get(_Object)
     Obj.Data.Weight = 0
     Obj.Value.Value = 0
+
     if Obj.Use ~= nil then
         Obj.Use.ItemUseBlocked = 1
+    end
+    if Obj.ServerItem ~= nil and Obj.ServerItem.CanUse ~= nil then
+        Obj.ServerItem.CanUse = false
     end
 end
 
