@@ -1,7 +1,7 @@
 **WARNING!!!! This is a beta version, please make backups for your saves.**
 
 # BG3 Auto Wares
-Automatically set junks to wares on your choice!
+Automatically set junks to wares on your choice! This mod aims to recreate the original game experience with set wares automatically.
 
 # Install
 Download the pak from [release](https://www.nexusmods.com/baldursgate3/mods/14389), and put the pak into the the mod folder(manually or via mod manager).
