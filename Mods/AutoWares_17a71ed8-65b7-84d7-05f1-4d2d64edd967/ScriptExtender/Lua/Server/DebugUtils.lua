@@ -9,14 +9,26 @@ function GetInvenStore()
     end
 end
 
+function StoreInvent()
+    Inven = {}
+    Osi.IterateInventory(Osi.GetHostCharacter(), "AW_Store_Inv", "AW_Store_Inv_COMP")
+end
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
+    if _Event == "AW_Store_Inv" then
+        local Obj = Ext.Entity.Get(_Object)
+        Inven[_Object] = 1
+    end
+end)
+
 function IterInvent()
     Inven = {}
     Osi.IterateInventory(Osi.GetHostCharacter(), "AW_ITER_Inv", "AW_ITER_Inv_COMP")
 end
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
     if _Event == "AW_ITER_Inv" then
-        local Obj = Ext.Entity.Get(_Object)
-        Inven[_Object] = 1
+        -- local Obj = Ext.Entity.Get(_Object)
+        -- Inven[_Object] = 1
+        _D(_Object)
     end
 end)
 
@@ -79,10 +91,11 @@ local function GetChest()
     _D(Chest)
 end
 
-Ext.RegisterConsoleCommand("StoreInv", IterInvent)
-Ext.RegisterConsoleCommand("GetInv", GetInvenStore)
-Ext.RegisterConsoleCommand("GetTemplateDbg", AW_GetTemplate)
-Ext.RegisterConsoleCommand("Doit", AW_DoAny)
-Ext.RegisterConsoleCommand("FixWareGolds", FixWareGolds)
+Ext.RegisterConsoleCommand("AWIterInv", IterInvent)
+Ext.RegisterConsoleCommand("AWStoreInv", StoreInvent)
+Ext.RegisterConsoleCommand("AWGetInv", GetInvenStore)
+Ext.RegisterConsoleCommand("AWGetTemplateDbg", AW_GetTemplate)
+Ext.RegisterConsoleCommand("AWDoit", AW_DoAny)
+Ext.RegisterConsoleCommand("AWFixWareGolds", FixWareGolds)
 Ext.RegisterConsoleCommand("AWGetChest", GetChest)
 Ext.RegisterConsoleCommand("AWChestItems", GetMagicChestItems)

@@ -11,7 +11,6 @@ CleanStackQueue = {}
 bStopCloneDummy = false
 
 local function IsBlackList(_Object)
-    -- TODO prevent inventory
     local Obj = Ext.Entity.Get(_Object)
     if Obj ~= nil and (Obj.ServerItem.Flags & "StoryItem") ~= {} then
         _D(_Object.." is StoryItem")
@@ -149,20 +148,30 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
         -- local MagicChest = AW_GetMagicChest()
         local Owner = GetChestOwner()
         TemplateAddTo(RefreshWeightDummy, Owner, 1, 0)
-        TimerLaunch("AW_RemoveMagicDummySoap", 10)
+        TimerLaunch("AW_RemoveMagicDummySoap", 100)
     end
 end)
+
+DummySoapCount = 0
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_RemoveMagicDummySoap" then
         -- local MagicChest = AW_GetMagicChest()
         local Owner = GetChestOwner()
-        local MagicSoap = GetItemByTemplateInPartyInventory(RefreshWeightDummy, Owner)
-        if MagicSoap == nil then
-            _D("Warning! The bug is coming out!!! Try again!!")
+        local exists = TemplateIsInInventory(RefreshWeightDummy, Owner)
+        if exists > 0 or DummySoapCount < 40 then
+            local MagicSoap = GetItemByTemplateInInventory(RefreshWeightDummy, Owner)
+            if MagicSoap ~= nil then
+                -- _D("Warning! The bug is coming out!!! Try again!!")
+                -- TimerLaunch("AW_RemoveMagicDummySoap", 10)
+                -- return
+                RequestDelete(MagicSoap)
+            end
+            DummySoapCount = DummySoapCount + 1
             TimerLaunch("AW_RemoveMagicDummySoap", 10)
-            return
+        else
+            DummySoapCount = 0
+            _D("Done Remove Dummy Soap")
         end
-        RequestDelete(MagicSoap)
     end
 end)
 
@@ -188,76 +197,83 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
     end
 end)
 
+
+TemplateAddQueue = {}
+bStopRemoveDummy = false
+
 --Make a copy when putting into the MagicChest and remove it when move out the MagicChest
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTemplate, _Object, _InventoryHolder, _AddType)
     local HolderTemplate = GetTemplate(_InventoryHolder)
     -- _D("TemplateAddedTo Holder".._InventoryHolder .. " Item:".._Object)
-    if MagicWareChestTemplate_UUID ~= HolderTemplate or AW_bTrackingWaresChest ~= true then
+    if MagicWareChestTemplate_UUID ~= HolderTemplate or AW_bTrackingWaresChest == false then
         return
     end
 
     if bStopCloneDummy then
         bStopCloneDummy = false
+        bStopRemoveDummy = false
+        CleanChestWeight()
         return
     end
 
-    local exists = TemplateIsInInventory(_ObjectTemplate, _InventoryHolder)
+    local exists = TemplateIsInInventory(_ObjectTemplate, AW_GetMagicChest())
     local amount = GetStackAmount(_Object)
     local Owner = GetChestOwner()
+
+    bStopRemoveDummy = true
+    ToInventory(_Object, Owner, amount, 0, 1)
+
     if IsBlackList(_Object) or IsItem(_Object) == 0 then
-        ToInventory(_Object, Owner, amount, 0, 1)
-        _D("BlackListObj: " .. _Object .." Entering!")
+        local a = IsBlackList(_Object)
+        local b = IsItem(_Object)
+        -- _D("BlackListObj: " .. _Object .." Entering!")
         return
     end
-    -- _D("Copy:".. _Object.." Template:".._ObjectTemplate)
-    MarkObjectWareSample(_Object)
-    TemplateAddTo(_ObjectTemplate, Owner, amount)
+    addUniqueValue(TemplateAddQueue, _ObjectTemplate)
+    addUniqueValue(CleanStackQueue, _ObjectTemplate)
+    TimerLaunch("AW_CleanStack", 10)
 
-    if exists > 1 then
-        -- _D("TODO remove stack "..amount)
-        addUniqueValue(CleanStackQueue, _ObjectTemplate)
-        TimerLaunch("AW_CleanMagicChestStack", 0)
-    end
 end)
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
-    if _Event ~= "AW_CleanMagicChestStack" then
+    if _Event ~= "AW_CleanStack" then
         return
     end
-    
-    local _ObjectTemplate = CleanStackQueue[1]
-    if _ObjectTemplate == nil then
+    local ItemTemp = CleanStackQueue[1]
+    if ItemTemp == nil then
+        TimerLaunch("AW_SetTemplate", 10)
         return
     end
-    local MagicChest = AW_GetMagicChest()
-   
-    local exists = TemplateIsInInventory(_ObjectTemplate, MagicChest)
-    if exists ~= nil and exists ~= 1 then
-        local Item = GetItemByTemplateInInventory(_ObjectTemplate, MagicChest)
-        local amount = -1
-        if Item ~= nil then
-            amount = GetStackAmount(Item)
-            RequestDelete(Item)
-        end
-        if exists == amount then
-            bStopCloneDummy = true
-            -- _D("Object:"..Item.."Fullstack")
-            TemplateAddTo(_ObjectTemplate, MagicChest, 1, 0)
-        end
-        -- _D("Cleaning:".._ObjectTemplate.." Obj ".. Item.. " in ".. MagicChest)
-        TimerLaunch("AW_CleanMagicChestStack", 0)
+    local Item = GetItemByTemplateInInventory(ItemTemp, AW_GetMagicChest())
+    if Item ~= nil then
+        RequestDelete(Item)
     else
-        -- _D("Done CLeanup:".._ObjectTemplate.." exist:"..exists)
-        removeExistingValue(CleanStackQueue, _ObjectTemplate)
-        -- _D(CleanStackQueue)
-        if CleanStackQueue ~= {} then
-            TimerLaunch("AW_CleanMagicChestStack", 0)
-        end
+        removeExistingValue(CleanStackQueue, ItemTemp)
     end
+    TimerLaunch("AW_CleanStack", 10)
+    
 end)
+Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
+    if _Event ~= "AW_SetTemplate" then
+        return
+    end
+    local ItemTemp = TemplateAddQueue[1]
+    if ItemTemp == nil then
+        return
+    end
+
+    bStopCloneDummy = true
+    bStopRemoveDummy = true
+    local MagicChest = AW_GetMagicChest()
+    TemplateAddTo(ItemTemp, MagicChest, 1, 0)
+    removeExistingValue(TemplateAddQueue, ItemTemp)
+    TimerLaunch("AW_SetTemplate", 1)
+end)
+
+-- Prevent Item Removing from the chest
 Ext.Osiris.RegisterListener("RemovedFrom", 2, "after", function(_Object, _InventoryHolder)
     local HolderTemplate = GetTemplate(_InventoryHolder)
     if MagicWareChestTemplate_UUID == HolderTemplate and IsItem(_Object) ~= 0 then
-        if IsBlackList(_Object) or AW_bTrackingWaresChest ~= true then
+        if IsBlackList(_Object) or AW_bTrackingWaresChest == false or bStopRemoveDummy == true then
             return
         end
 
