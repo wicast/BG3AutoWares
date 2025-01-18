@@ -1,9 +1,14 @@
 local Samples = {}
 
-local TemplateFile = "AutoWares/AutoWaresTemplate.json"
+local TemplateFile = "AutoWares/AutoWaresTemplate"
 
-local function SaveWareSample()
+local AW_Slot = 0
+local function SaveWareSample(cmd, slot)
     local MagicChest = AW_GetMagicChest()
+    if slot == nil then
+        slot = 0
+    end
+    AW_Slot = slot
     Osi.IterateInventory(MagicChest, "AW_SaveWareSample", "AW_SaveWareSample_DONE")
 end
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
@@ -13,7 +18,7 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
 end)
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
     if _Event == "AW_SaveWareSample_DONE" then
-        Ext.IO.SaveFile(TemplateFile, Ext.DumpExport(Samples))
+        Ext.IO.SaveFile(TemplateFile..AW_Slot..".json", Ext.DumpExport(Samples))
         _D("AutoWaresTemplate.json saved")
     end
 end)
@@ -26,8 +31,11 @@ end
 local LoadQueue = {}
 local TheChestOwner
 
-local function LoadWareSample()
-    local FileStr = Ext.IO.LoadFile(TemplateFile)
+local function LoadWareSample(cmd, slot, ...)
+    if slot == nil then
+        slot = 0
+    end
+    local FileStr = Ext.IO.LoadFile(TemplateFile..slot..".json")
     if FileStr ~= nil then
         LoadQueue = Ext.Json.Parse(FileStr)
         AW_bTrackingWaresChest = false
@@ -38,13 +46,13 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_LoadWareSample_CleanUp" then
         TheChestOwner = GetChestOwner()
         Uninstall()
-        TimerLaunch("AW_LoadWareSample_GiveEmptyChest", 1)
+        TimerLaunch("AW_LoadWareSample_GiveEmptyChest", 10)
     end
 end)
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_LoadWareSample_GiveEmptyChest" then
         TemplateAddTo(MagicWareChestTemplate_UUID, TheChestOwner, 1, 0)
-        TimerLaunch("AW_LoadWareSample_LoadSampleIter", 100)
+        TimerLaunch("AW_LoadWareSample_LoadSampleIter", 50)
     end
 end)
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
@@ -58,7 +66,7 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
         local T = LoadQueue[1]
         if removeExistingValue(LoadQueue, T) then
             TemplateAddTo(T, Chest, 1, 0)    
-            TimerLaunch("AW_LoadWareSample_LoadSampleIter", 0)    
+            TimerLaunch("AW_LoadWareSample_LoadSampleIter", 10)
         else
             TimerLaunch("AW_LoadWareSample_Finish", 100)
         end

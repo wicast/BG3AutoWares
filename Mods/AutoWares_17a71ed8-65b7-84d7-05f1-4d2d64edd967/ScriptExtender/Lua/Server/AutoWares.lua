@@ -2,13 +2,13 @@
 MagicWareChestTemplate_UUID = "DEC_Dungeon_Skeleton_Ribcage_A_Bloody_A_AW_MagicWares_01b9fb82-1739-4075-815b-f5d11d764e1c"
 RefreshWeightDummy = "LOOT_GEN_Autopsy_Jar_Tadpoles_B_AW_RefreshWeightDummy_083f48a7-1727-4e57-88ea-e393c305eb0a"
 
-ObjTemplateBlackList = {
+AW_ObjTemplateBlackList = {
                         "LOOT_Gold_A_1c3c9c74-34a1-4685-989e-410dc080be6f",
                         "DLC_DD_Clothing_Chest_8a1f5dc0-3f13-47ed-b238-50fdcaa2f680"
                     }
 
-CleanStackQueue = {}
-bStopCloneDummy = false
+local CleanStackQueue = {}
+local bStopCloneDummy = false
 
 local function IsBlackList(_Object)
     local Obj = Ext.Entity.Get(_Object)
@@ -18,7 +18,7 @@ local function IsBlackList(_Object)
     end
 
     local ObjTemplate = GetTemplate(_Object)
-    for k,v in pairs(ObjTemplateBlackList) do
+    for k,v in pairs(AW_ObjTemplateBlackList) do
         if ObjTemplate == v then
             return true
         end
@@ -152,13 +152,13 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
     end
 end)
 
-DummySoapCount = 0
+local DummySoapCount = 0
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_RemoveMagicDummySoap" then
         -- local MagicChest = AW_GetMagicChest()
         local Owner = GetChestOwner()
         local exists = TemplateIsInInventory(RefreshWeightDummy, Owner)
-        if exists > 0 or DummySoapCount < 40 then
+        if exists > 0 or DummySoapCount < 20 then
             local MagicSoap = GetItemByTemplateInInventory(RefreshWeightDummy, Owner)
             if MagicSoap ~= nil then
                 -- _D("Warning! The bug is coming out!!! Try again!!")
@@ -198,8 +198,8 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
 end)
 
 
-TemplateAddQueue = {}
-bStopRemoveDummy = false
+local TemplateAddQueue = {}
+local bStopRemoveDummy = false
 
 --Make a copy when putting into the MagicChest and remove it when move out the MagicChest
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTemplate, _Object, _InventoryHolder, _AddType)
