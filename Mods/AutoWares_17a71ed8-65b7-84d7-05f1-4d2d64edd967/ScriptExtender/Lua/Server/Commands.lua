@@ -46,13 +46,13 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_LoadWareSample_CleanUp" then
         TheChestOwner = GetChestOwner()
         Uninstall()
-        TimerLaunch("AW_LoadWareSample_GiveEmptyChest", 10)
+        TimerLaunch("AW_LoadWareSample_GiveEmptyChest", 100)
     end
 end)
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_LoadWareSample_GiveEmptyChest" then
         TemplateAddTo(MagicWareChestTemplate_UUID, TheChestOwner, 1, 0)
-        TimerLaunch("AW_LoadWareSample_LoadSampleIter", 50)
+        TimerLaunch("AW_LoadWareSample_LoadSampleIter", 300)
     end
 end)
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
@@ -63,18 +63,23 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
             return
         end
         
+        AW_bTrackingWaresChest = false
         local T = LoadQueue[1]
-        if removeExistingValue(LoadQueue, T) then
-            TemplateAddTo(T, Chest, 1, 0)    
-            TimerLaunch("AW_LoadWareSample_LoadSampleIter", 10)
-        else
-            TimerLaunch("AW_LoadWareSample_Finish", 100)
+        for k,v in pairs(LoadQueue) do
+            TemplateAddTo(v, Chest, 1, 0)
         end
+        -- if removeExistingValue(LoadQueue, T) then
+        --     TemplateAddTo(T, Chest, 1, 0)
+
+        --     TimerLaunch("AW_LoadWareSample_LoadSampleIter", 10)
+        -- else
+        --     TimerLaunch("AW_LoadWareSample_Finish", 100)
+        -- end
+        TimerLaunch("AW_LoadWareSample_Finish", 100)
     end
 end)
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_LoadWareSample_Finish" then
-        AW_bTrackingWaresChest = true
         CleanChestWeight()
         _D("Done Loading")
     end

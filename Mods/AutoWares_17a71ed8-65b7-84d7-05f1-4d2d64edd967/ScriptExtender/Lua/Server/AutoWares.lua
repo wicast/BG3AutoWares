@@ -138,7 +138,7 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
         -- _D("CleanObj:".._ObjectTemplate.."exists:"..exists)
         if exists > 1 then
             addUniqueValue(CleanStackQueue, _ObjectTemplate)
-            TimerLaunch("AW_CleanMagicChestStack", 10)
+            TimerLaunch("AW_CleanStack", 10)
         end
     end
 end)
@@ -146,6 +146,8 @@ end)
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
     if _Event == "AW_SetMagicChestWeight_DONE" then
         -- local MagicChest = AW_GetMagicChest()
+        AW_bTrackingWaresChest = true
+        
         local Owner = GetChestOwner()
         TemplateAddTo(RefreshWeightDummy, Owner, 1, 0)
         TimerLaunch("AW_RemoveMagicDummySoap", 100)
