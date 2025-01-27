@@ -1,2 +1,3 @@
 Mods/*/Story/**/*.*
 !Mods/*/Story/RawFiles/Goals/*
+.vscode/launch.json

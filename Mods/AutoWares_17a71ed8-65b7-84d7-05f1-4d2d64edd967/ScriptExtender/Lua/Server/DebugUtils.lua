@@ -91,6 +91,14 @@ local function GetChest()
     _D(Chest)
 end
 
+local function StopTrackingRemoved()
+    AW_bTrackingWaresChest = false
+end
+
+local function EnableTrackingRemoved()
+    AW_bTrackingWaresChest = false
+end
+
 Ext.RegisterConsoleCommand("AWIterInv", IterInvent)
 Ext.RegisterConsoleCommand("AWStoreInv", StoreInvent)
 Ext.RegisterConsoleCommand("AWGetInv", GetInvenStore)
@@ -99,3 +107,5 @@ Ext.RegisterConsoleCommand("AWDoit", AW_DoAny)
 Ext.RegisterConsoleCommand("AWFixWareGolds", FixWareGolds)
 Ext.RegisterConsoleCommand("AWGetChest", GetChest)
 Ext.RegisterConsoleCommand("AWChestItems", GetMagicChestItems)
+Ext.RegisterConsoleCommand("AWDisable", StopTrackingRemoved)
+Ext.RegisterConsoleCommand("AWEnable", EnableTrackingRemoved)
