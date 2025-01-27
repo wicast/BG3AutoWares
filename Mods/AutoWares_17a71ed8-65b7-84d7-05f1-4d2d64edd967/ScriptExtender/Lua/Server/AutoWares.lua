@@ -281,6 +281,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
     CleanChestWeight()
 
 end)
+AW_ShowGiveBackNotify = 1
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
     if _Event ~= "AW_AddToChestOwner" then
         return
@@ -291,26 +292,10 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
     end
 
     local Owner = GetChestOwner()
-    TemplateAddTo(ItemTemp[1], Owner, ItemTemp[2], 1)
+    TemplateAddTo(ItemTemp[1], Owner, ItemTemp[2], AW_ShowGiveBackNotify)
     TemplateAddQueue[ItemTemp[1]] = nil
     TimerLaunch("AW_AddToChestOwner", 10)
 end)
--- Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
---     if _Event ~= "AW_SetTemplate" then
---         return
---     end
---     local ItemTemp = TemplateAddQueue[1]
---     if ItemTemp == nil then
---         return
---     end
-
---     bStopCloneDummy = true
---     bStopRemoveDummy = true
---     local MagicChest = AW_GetMagicChest()
---     TemplateAddTo(ItemTemp, MagicChest, 1, 0)
---     removeExistingValue(TemplateAddQueue, ItemTemp)
---     TimerLaunch("AW_SetTemplate", 1)
--- end)
 
 -- Prevent Item Removing from the chest
 Ext.Osiris.RegisterListener("RemovedFrom", 2, "after", function(_Object, _InventoryHolder)
