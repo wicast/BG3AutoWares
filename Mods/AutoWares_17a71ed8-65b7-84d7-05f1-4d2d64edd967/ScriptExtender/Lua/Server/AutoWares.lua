@@ -150,9 +150,17 @@ function CleanChestWeight()
     MagicChestObj.InventoryWeight.Weight = 0
     MagicChestObj.Data.Weight = 0
     MagicChestObj.Value.Value = 0
-    
-    Osi.IterateInventory(MagicChest, "AW_SetMagicChestWeight", "AW_SetMagicChestWeight_DONE")
+
+    TimerLaunch("AW_CleanChestWeight_ITER_START", 200)
 end
+Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
+    if _Event ~= "AW_CleanChestWeight_ITER_START" then
+        return
+    end
+    bStopCloneDummy = true
+    local MagicChest = AW_GetMagicChest()
+    Osi.IterateInventory(MagicChest, "AW_SetMagicChestWeight", "AW_SetMagicChestWeight_DONE")
+end)
 -- Make the chest no weight
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
     if _Event == "AW_SetMagicChestWeight" then
@@ -164,7 +172,7 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
             bStopCloneDummy = true
             bStopRemoveDummy = true
             addUniqueValue(CleanStackQueue, _ObjectTemplate)
-            TimerLaunch("AW_CleanStack", 10)
+            TimerLaunch("AW_CleanStack", 100)
         end
     end
 end)
@@ -174,8 +182,7 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
     end
     local ItemTemp = CleanStackQueue[1]
     if ItemTemp == nil then
-        bStopCloneDummy = false
-        bStopRemoveDummy = false
+        TimerLaunch("AW_CleanStack_Finished", 200)
         return
     end
     local Item = GetItemByTemplateInInventory(ItemTemp, AW_GetMagicChest())
@@ -185,13 +192,29 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
         local MagicChest = AW_GetMagicChest()
         TemplateAddTo(ItemTemp, MagicChest, 1, 0)
         removeExistingValue(CleanStackQueue, ItemTemp)
+        bCleaning = true
     end
     TimerLaunch("AW_CleanStack", 100)
 end)
+Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
+    if _Event ~= "AW_CleanStack_Finished" then
+        return
+    end
+    bStopCloneDummy = false
+    bStopRemoveDummy = false
+    bCleaning = false
+end)
+
 -- Refresh weight who carrying the chest
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
     if _Event == "AW_SetMagicChestWeight_DONE" then
         
+        local ItemTemp = CleanStackQueue[1]
+        if ItemTemp == nil then
+            bStopCloneDummy = false
+            bStopRemoveDummy = false
+        end
+
         local Owner = GetChestOwner()
         TemplateAddTo(RefreshWeightDummy, Owner, 1, 0)
         TimerLaunch("AW_RemoveMagicDummySoap", 100)
@@ -251,7 +274,8 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
         return
     end
 
-    if bStopCloneDummy then
+    if bCleaning == true then
+        bCleaning = false
         return
     end
 
@@ -259,8 +283,11 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
     local amount = GetStackAmount(_Object)
     local Owner = GetChestOwner()
 
-    -- bStopRemoveDummy = true
-    -- ToInventory(_Object, Owner, amount, 0, 1)
+    TemplateAddTo(_ObjectTemplate, Owner, amount, 1)
+
+    if bStopCloneDummy then
+        return
+    end
 
     if IsBlackList(_Object) or IsItem(_Object) == 0 then
         -- local a = IsBlackList(_Object)
@@ -269,15 +296,15 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
         return
     end
 
-    -- _D("Template:".._ObjectTemplate.." exist:"..exists.." amount:"..amount)
+    _D("Template:".._ObjectTemplate.." object:".._Object.." exist:"..exists.." amount:"..amount)
 
-    if TemplateAddQueue[_ObjectTemplate] ~= nil then
-        TemplateAddQueue[_ObjectTemplate] = TemplateAddQueue[_ObjectTemplate] + amount
-    else
-        TemplateAddQueue[_ObjectTemplate] = amount
-    end
-    addUniqueValue(CleanStackQueue, _ObjectTemplate)
-    TimerLaunch("AW_AddToChestOwner", 500)
+    -- if TemplateAddQueue[_ObjectTemplate] ~= nil then
+    --     TemplateAddQueue[_ObjectTemplate] = TemplateAddQueue[_ObjectTemplate] + amount
+    -- else
+    --     TemplateAddQueue[_ObjectTemplate] = amount
+    -- end
+    -- addUniqueValue(CleanStackQueue, _ObjectTemplate)
+    -- TimerLaunch("AW_AddToChestOwner", 1000)
     CleanChestWeight()
 
 end)
@@ -293,6 +320,7 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
 
     local Owner = GetChestOwner()
     TemplateAddTo(ItemTemp[1], Owner, ItemTemp[2], AW_ShowGiveBackNotify)
+    _D("add:"..ItemTemp[1].."amount:"..ItemTemp[2])
     TemplateAddQueue[ItemTemp[1]] = nil
     TimerLaunch("AW_AddToChestOwner", 10)
 end)
