@@ -151,16 +151,10 @@ function CleanChestWeight()
     MagicChestObj.Data.Weight = 0
     MagicChestObj.Value.Value = 0
 
-    TimerLaunch("AW_CleanChestWeight_ITER_START", 200)
-end
-Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
-    if _Event ~= "AW_CleanChestWeight_ITER_START" then
-        return
-    end
     bStopCloneDummy = true
     local MagicChest = AW_GetMagicChest()
     Osi.IterateInventory(MagicChest, "AW_SetMagicChestWeight", "AW_SetMagicChestWeight_DONE")
-end)
+end
 -- Make the chest no weight
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
     if _Event == "AW_SetMagicChestWeight" then
@@ -176,6 +170,7 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
         end
     end
 end)
+local bCleaning = false
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
     if _Event ~= "AW_CleanStack" then
         return
@@ -296,7 +291,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
         return
     end
 
-    _D("Template:".._ObjectTemplate.." object:".._Object.." exist:"..exists.." amount:"..amount)
+    -- _D("Template:".._ObjectTemplate.." object:".._Object.." exist:"..exists.." amount:"..amount)
 
     -- if TemplateAddQueue[_ObjectTemplate] ~= nil then
     --     TemplateAddQueue[_ObjectTemplate] = TemplateAddQueue[_ObjectTemplate] + amount
