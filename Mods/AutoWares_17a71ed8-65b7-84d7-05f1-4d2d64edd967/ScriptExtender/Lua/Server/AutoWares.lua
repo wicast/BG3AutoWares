@@ -208,6 +208,7 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
         if ItemTemp == nil then
             bStopCloneDummy = false
             bStopRemoveDummy = false
+            AW_bTrackingWaresChest = true
         end
 
         local Owner = GetChestOwner()

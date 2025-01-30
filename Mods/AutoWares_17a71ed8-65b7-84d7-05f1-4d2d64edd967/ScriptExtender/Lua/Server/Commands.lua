@@ -3,7 +3,7 @@ local Samples = {}
 local TemplateFile = "AutoWares/AutoWaresTemplate"
 
 local AW_Slot = 0
-local function SaveWareSample(cmd, slot)
+local function AW_SaveWareSample(cmd, slot)
     local MagicChest = AW_GetMagicChest()
     if slot == nil then
         slot = 0
@@ -23,21 +23,21 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
     end
 end)
 
-local function Uninstall()
+local function AW_Uninstall()
     local MagicChest = AW_GetMagicChest()
     RequestDelete(MagicChest)
 end
 
-local LoadQueue = {}
+local AW_LoadQueue = {}
 local TheChestOwner
 
-local function LoadWareSample(cmd, slot, ...)
+local function AW_LoadWareSample(cmd, slot, ...)
     if slot == nil then
         slot = 0
     end
     local FileStr = Ext.IO.LoadFile(TemplateFile..slot..".json")
     if FileStr ~= nil then
-        LoadQueue = Ext.Json.Parse(FileStr)
+        AW_LoadQueue = Ext.Json.Parse(FileStr)
         AW_bTrackingWaresChest = false
         TimerLaunch("AW_LoadWareSample_CleanUp", 0)
     end
@@ -45,7 +45,7 @@ end
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_LoadWareSample_CleanUp" then
         TheChestOwner = GetChestOwner()
-        Uninstall()
+        AW_Uninstall()
         TimerLaunch("AW_LoadWareSample_GiveEmptyChest", 100)
     end
 end)
@@ -63,18 +63,10 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
             return
         end
         
-        AW_bTrackingWaresChest = false
-        local T = LoadQueue[1]
-        for k,v in pairs(LoadQueue) do
+        local T = AW_LoadQueue[1]
+        for k,v in pairs(AW_LoadQueue) do
             TemplateAddTo(v, Chest, 1, 0)
         end
-        -- if removeExistingValue(LoadQueue, T) then
-        --     TemplateAddTo(T, Chest, 1, 0)
-
-        --     TimerLaunch("AW_LoadWareSample_LoadSampleIter", 10)
-        -- else
-        --     TimerLaunch("AW_LoadWareSample_Finish", 100)
-        -- end
         TimerLaunch("AW_LoadWareSample_Finish", 100)
     end
 end)
@@ -85,6 +77,56 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     end
 end)
 
-Ext.RegisterConsoleCommand("AWSave", SaveWareSample)
-Ext.RegisterConsoleCommand("AWLoad", LoadWareSample)
-Ext.RegisterConsoleCommand("AWUninstall", Uninstall)
+local MergeSource
+local function AW_MergeWareSample(cmd, source, clean, ...)
+    local Chest = AW_GetMagicChest()
+
+    if source == nil then
+        MergeSource = 0
+    else
+        MergeSource = source
+    end
+    if clean == nil then
+        clean = 1
+    end
+
+    if clean ~= 0 then
+        AW_LoadQueue = {}
+    end
+    AW_bTrackingWaresChest = false
+    Osi.IterateInventory(Chest, "AW_CollectToMerge", "AW_CollectToMerge_DONE")
+end
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
+    if _Event ~= "AW_CollectToMerge" then
+        return
+    end
+
+    local _ObjectTemplate = GetTemplate(_Object)
+    
+    addUniqueValue(AW_LoadQueue, _ObjectTemplate)
+end)
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
+    if _Event ~= "AW_CollectToMerge_DONE" then
+        return
+    end
+
+    -- TODO deal preset
+    local SourceFileStr = Ext.IO.LoadFile(TemplateFile..MergeSource..".json")
+    if SourceFileStr == nil then
+        return
+    end
+
+    local SourceList = Ext.Json.Parse(SourceFileStr)
+    for k,v in pairs(SourceList) do
+        addUniqueValue(AW_LoadQueue, v)
+    end
+    
+    TimerLaunch("AW_LoadWareSample_CleanUp", 0)
+    
+end)
+
+
+Ext.RegisterConsoleCommand("AWSave", AW_SaveWareSample)
+Ext.RegisterConsoleCommand("AWLoad", AW_LoadWareSample)
+Ext.RegisterConsoleCommand("AWMerge", AW_MergeWareSample)
+Ext.RegisterConsoleCommand("AWUninstall", AW_Uninstall)
