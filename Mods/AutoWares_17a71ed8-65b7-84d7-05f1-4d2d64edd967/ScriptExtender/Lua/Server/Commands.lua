@@ -3,12 +3,13 @@ local Samples = {}
 local TemplateFile = "AutoWares/AutoWaresTemplate"
 
 local AW_Slot = 0
-local function AW_SaveWareSample(cmd, slot)
+function AW_SaveWareSample(cmd, slot)
     local MagicChest = AW_GetMagicChest()
     if slot == nil then
         slot = 0
     end
     AW_Slot = slot
+    AW_LoadQueue = {}
     Osi.IterateInventory(MagicChest, "AW_SaveWareSample", "AW_SaveWareSample_DONE")
 end
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
@@ -31,7 +32,7 @@ end
 local AW_LoadQueue = {}
 local TheChestOwner
 
-local function AW_LoadWareSample(cmd, slot, ...)
+function AW_LoadWareSample(cmd, slot, ...)
     if slot == nil then
         slot = 0
     end
@@ -73,12 +74,13 @@ end)
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_LoadWareSample_Finish" then
         CleanChestWeight()
+        AW_LoadQueue = {}
         _D("Done Loading")
     end
 end)
 
 local MergeSource
-local function AW_MergeWareSample(cmd, source, clean, ...)
+function AW_MergeWareSample(cmd, source, clean, ...)
     local Chest = AW_GetMagicChest()
 
     if source == nil then
@@ -105,19 +107,25 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
     
     addUniqueValue(AW_LoadQueue, _ObjectTemplate)
 end)
+AW_SourceList = {}
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
     if _Event ~= "AW_CollectToMerge_DONE" then
         return
     end
 
-    -- TODO deal preset
-    local SourceFileStr = Ext.IO.LoadFile(TemplateFile..MergeSource..".json")
-    if SourceFileStr == nil then
-        return
+    -- deal preset
+    if MergeSource ~= -909 then
+        local SourceFileStr = Ext.IO.LoadFile(TemplateFile..MergeSource..".json")
+        if SourceFileStr == nil then
+            return
+        end
+    
+        AW_SourceList = Ext.Json.Parse(SourceFileStr)
     end
 
-    local SourceList = Ext.Json.Parse(SourceFileStr)
-    for k,v in pairs(SourceList) do
+    -- _D(AW_SourceList)
+    
+    for k,v in pairs(AW_SourceList) do
         addUniqueValue(AW_LoadQueue, v)
     end
     

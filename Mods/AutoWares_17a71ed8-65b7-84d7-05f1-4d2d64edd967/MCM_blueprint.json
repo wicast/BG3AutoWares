@@ -1,0 +1,41 @@
+{
+    "SchemaVersion": 1,
+    "ModName": "Auto Wares",
+    "Tabs": [
+        {
+            "TabName": "Save&Load",
+            "TabId": "AW_sw",
+            "Settings": [
+                {
+                    "Id": "AW_sw_action",
+                    "Name": "Action",
+                    "Type": "radio",
+                    "Default": "Merge",
+                    "Options": {
+                        "Choices": [
+                            "Merge",
+                            "Load",
+                            "Save"
+                        ]
+                    },
+                    "Tooltip": "Select an action"
+                },
+                {
+                    "Id": "AW_sw_slot",
+                    "Name": "Slot",
+                    "Type": "slider_int",
+                    "Default": 0,
+                    "Options": {
+                        "Min": 0,
+                        "Max": 100
+                    },
+                    "Tooltip": "Select a slot"
+                }
+            ]
+        },
+        {
+            "TabName": "Presets",
+            "TabId": "AW_presets"
+        }
+    ]
+}
