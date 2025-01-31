@@ -16,7 +16,7 @@ local function Init()
     if MCM == nil then
         return
     end
-    AW_GlobalEnabled = MCM.Get("AW_Enable")
+    AW_GlobalEnabled = MCM.Get("AW_enable")
     AW_ShowGiveBackNotify = MCM.Get("AW_show_notification") and 1 or 0
 end
 
@@ -131,7 +131,8 @@ end
 
 -- Check If WareChest exist in party
 Ext.Osiris.RegisterListener("LevelLoaded", 1, "after", function(_Level) -- Don't use SavegameLoaded
-    -- TODO load enable
+    Init()
+
     local MagicChest = AW_GetMagicChest()
     if MagicChest == nil then
         TimerLaunch("AW_GiveAMagicWareChest", 0)
