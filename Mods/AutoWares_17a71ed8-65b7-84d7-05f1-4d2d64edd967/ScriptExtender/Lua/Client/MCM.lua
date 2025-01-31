@@ -34,15 +34,20 @@ Mods.BG3MCM.IMGUIAPI:InsertModMenuTab(ModuleUUID, "Presets", function(tabHeader)
         message.preset = "Rotten"
         SendMsg(message)
     end
+    local Tooltip = RottenPreset:Tooltip()
+    Tooltip:AddText("Merge Rotten Preset to your chest")
 end)
 
 Mods.BG3MCM.IMGUIAPI:InsertModMenuTab(ModuleUUID, "Misc", function(tabHeader)
-    local RottenPreset = tabHeader:AddButton("Uninstall")
-    RottenPreset.OnClick = function()
+    local Uninstall = tabHeader:AddButton("Uninstall")
+    Uninstall.OnClick = function()
         if Ext.Net.IsHost() == false then
             return
         end
         local message = {uninstall = true}
         SendMsg(message)
     end
+
+    local Tooltip = Uninstall:Tooltip()
+    Tooltip:AddText("Uninstall will remove the cheese chest from the game, then save and reload your game will make the game back to origin")
 end)
