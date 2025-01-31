@@ -10,17 +10,19 @@ AW_ObjTemplateBlackList = {
 local CleanStackQueue = {}
 local bStopCloneDummy = false
 AW_bTrackingWaresChest = true
+AW_GlobalEnabled = true
 
 local function IsBlackList(_Object)
     local Obj = Ext.Entity.Get(_Object)
-    if Obj ~= nil and (Obj.ServerItem.Flags & "StoryItem") ~= {} then
-        _D(_Object.." is StoryItem")
+    if Obj ~= nil and Obj.ServerItem ~= nil and ( Obj.ServerItem.StoryItem == true or Obj.ServerItem.IsContainer == true )  then
+        _D(_Object.." is BlackList")
         return true
     end
 
     local ObjTemplate = GetTemplate(_Object)
     for k,v in pairs(AW_ObjTemplateBlackList) do
         if ObjTemplate == v then
+            -- _D(_Object.." is BlackList")
             return true
         end
     end
@@ -121,6 +123,7 @@ end
 
 -- Check If WareChest exist in party
 Ext.Osiris.RegisterListener("LevelLoaded", 1, "after", function(_Level) -- Don't use SavegameLoaded
+    -- TODO load enable
     local MagicChest = AW_GetMagicChest()
     if MagicChest == nil then
         TimerLaunch("AW_GiveAMagicWareChest", 0)
@@ -144,6 +147,7 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
 end)
 
 local bStopRemoveDummy = false
+local bCleaning = false
 function CleanChestWeight()
     local MagicChest = AW_GetMagicChest()
     local MagicChestObj = Ext.Entity.Get(MagicChest)
@@ -163,14 +167,13 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
         local exists = TemplateIsInInventory(_ObjectTemplate, AW_GetMagicChest())
         -- _D("CleanObj:".._ObjectTemplate.."exists:"..exists)
         if exists > 1 then
-            bStopCloneDummy = true
-            bStopRemoveDummy = true
+            -- bStopRemoveDummy = true
+            bCleaning = true
             addUniqueValue(CleanStackQueue, _ObjectTemplate)
             TimerLaunch("AW_CleanStack", 100)
         end
     end
 end)
-local bCleaning = false
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
     if _Event ~= "AW_CleanStack" then
         return
@@ -187,7 +190,6 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
         local MagicChest = AW_GetMagicChest()
         TemplateAddTo(ItemTemp, MagicChest, 1, 0)
         removeExistingValue(CleanStackQueue, ItemTemp)
-        bCleaning = true
     end
     TimerLaunch("AW_CleanStack", 100)
 end)
@@ -195,22 +197,30 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
     if _Event ~= "AW_CleanStack_Finished" then
         return
     end
-    bStopCloneDummy = false
-    bStopRemoveDummy = false
     bCleaning = false
 end)
-
 -- Refresh weight who carrying the chest
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
     if _Event == "AW_SetMagicChestWeight_DONE" then
+        TimerLaunch("AW_CheckIsStackCleaning", 0)
+    end
+end)
+Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
+    if _Event == "AW_CheckIsStackCleaning" then
         
+        if bCleaning == true then
+            TimerLaunch("AW_CheckIsStackCleaning", 100)
+            return
+        end
         local ItemTemp = CleanStackQueue[1]
-        if ItemTemp == nil then
-            bStopCloneDummy = false
-            bStopRemoveDummy = false
-            AW_bTrackingWaresChest = true
+        if ItemTemp ~= nil then
+            TimerLaunch("AW_CheckIsStackCleaning", 100)
+            return
         end
 
+        bStopCloneDummy = false
+        bStopRemoveDummy = false
+        AW_bTrackingWaresChest = true
         local Owner = GetChestOwner()
         TemplateAddTo(RefreshWeightDummy, Owner, 1, 0)
         TimerLaunch("AW_RemoveMagicDummySoap", 100)
@@ -241,7 +251,7 @@ end)
 
 -- Auto Add To Wares
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTemplate, _Object, _InventoryHolder, _AddType)
-    if IsItem(_Object) ~= 0 and IsPartyMember(_InventoryHolder, 0) ~= nil and IsPartyMember(_InventoryHolder, 0) ~=0 then
+    if AW_GlobalEnabled == true and IsItem(_Object) ~= 0 and IsPartyMember(_InventoryHolder, 0) ~= nil and IsPartyMember(_InventoryHolder, 0) ~=0 then
         local MagicWareChest = GetItemByTemplateInPartyInventory(MagicWareChestTemplate_UUID, _InventoryHolder)
         if MagicWareChest == nil or IsBlackList(_Object) then
             return
@@ -271,7 +281,6 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
     end
 
     if bCleaning == true then
-        bCleaning = false
         return
     end
 
@@ -279,30 +288,28 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
     local amount = GetStackAmount(_Object)
     local Owner = GetChestOwner()
 
-    TemplateAddTo(_ObjectTemplate, Owner, amount, 1)
+    if IsBlackList(_Object) or IsItem(_Object) == 0 then
+        -- local a = IsBlackList(_Object)
+        -- local b = IsItem(_Object)
+        -- _D("BlackListObj: " .. _Object .." Entering!")
+        ToInventory(_Object, GetChestOwner(), amount, 0, 1)
+        return
+    end
 
     if bStopCloneDummy then
         return
     end
 
-    if IsBlackList(_Object) or IsItem(_Object) == 0 then
-        -- local a = IsBlackList(_Object)
-        -- local b = IsItem(_Object)
-        -- _D("BlackListObj: " .. _Object .." Entering!")
+    TemplateAddTo(_ObjectTemplate, Owner, amount, 1)
+
+    TimerLaunch("AW_StartCleanStackAfterNewItemAdded", 999)
+end)
+Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
+    if _Event ~= "AW_StartCleanStackAfterNewItemAdded" then
         return
     end
 
-    -- _D("Template:".._ObjectTemplate.." object:".._Object.." exist:"..exists.." amount:"..amount)
-
-    -- if TemplateAddQueue[_ObjectTemplate] ~= nil then
-    --     TemplateAddQueue[_ObjectTemplate] = TemplateAddQueue[_ObjectTemplate] + amount
-    -- else
-    --     TemplateAddQueue[_ObjectTemplate] = amount
-    -- end
-    -- addUniqueValue(CleanStackQueue, _ObjectTemplate)
-    -- TimerLaunch("AW_AddToChestOwner", 1000)
     CleanChestWeight()
-
 end)
 AW_ShowGiveBackNotify = 1
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)

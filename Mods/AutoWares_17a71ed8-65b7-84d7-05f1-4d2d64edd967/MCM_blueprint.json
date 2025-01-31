@@ -1,6 +1,7 @@
 {
     "SchemaVersion": 1,
     "ModName": "Auto Wares",
+    "Optional": true,
     "Tabs": [
         {
             "TabName": "Save&Load",
@@ -36,6 +37,26 @@
         {
             "TabName": "Presets",
             "TabId": "AW_presets"
+        },
+        {
+            "TabName": "Misc",
+            "TabId": "AW_mics",
+            "Settings": [
+                {
+                    "Id":"AW_enable",
+                    "Name": "Enable",
+                    "Type": "checkbox",
+                    "Default": true,
+                    "Tooltip": "Enable or disable ware traction"
+                },
+                {
+                    "Id":"AW_show_notification",
+                    "Name": "Show Notification",
+                    "Type": "checkbox",
+                    "Default": true,
+                    "Tooltip": "Show Notification when adding to a new item to the chest"
+                }
+            ]
         }
     ]
 }

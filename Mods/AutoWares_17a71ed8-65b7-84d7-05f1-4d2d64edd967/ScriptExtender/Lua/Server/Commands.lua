@@ -39,7 +39,6 @@ function AW_LoadWareSample(cmd, slot, ...)
     local FileStr = Ext.IO.LoadFile(TemplateFile..slot..".json")
     if FileStr ~= nil then
         AW_LoadQueue = Ext.Json.Parse(FileStr)
-        AW_bTrackingWaresChest = false
         TimerLaunch("AW_LoadWareSample_CleanUp", 0)
     end
 end
@@ -52,7 +51,7 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
 end)
 Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function(_Event)
     if _Event == "AW_LoadWareSample_GiveEmptyChest" then
-        TemplateAddTo(MagicWareChestTemplate_UUID, TheChestOwner, 1, 0)
+        TemplateAddTo(MagicWareChestTemplate_UUID, TheChestOwner, 1, 1)
         TimerLaunch("AW_LoadWareSample_LoadSampleIter", 300)
     end
 end)
@@ -133,8 +132,13 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
     
 end)
 
+function AW_Enable(cmd, switch)
+    AW_GlobalEnabled = switch
+end
+
 
 Ext.RegisterConsoleCommand("AWSave", AW_SaveWareSample)
 Ext.RegisterConsoleCommand("AWLoad", AW_LoadWareSample)
 Ext.RegisterConsoleCommand("AWMerge", AW_MergeWareSample)
 Ext.RegisterConsoleCommand("AWUninstall", AW_Uninstall)
+Ext.RegisterConsoleCommand("AWEnable", AW_Enable)

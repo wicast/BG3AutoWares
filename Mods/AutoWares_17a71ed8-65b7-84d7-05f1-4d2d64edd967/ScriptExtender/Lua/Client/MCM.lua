@@ -25,7 +25,7 @@ Mods.BG3MCM.IMGUIAPI:InsertModMenuTab(ModuleUUID, "Save&Load", function(tabHeade
 end)
 
 Mods.BG3MCM.IMGUIAPI:InsertModMenuTab(ModuleUUID, "Presets", function(tabHeader)
-    local RottenPreset = tabHeader:AddButton("Load RottenFoodPreset")
+    local RottenPreset = tabHeader:AddButton("Load Rotten Food Preset")
     RottenPreset.OnClick = function()
         if Ext.Net.IsHost() == false then
             return
@@ -35,3 +35,5 @@ Mods.BG3MCM.IMGUIAPI:InsertModMenuTab(ModuleUUID, "Presets", function(tabHeader)
         SendMsg(message)
     end
 end)
+
+--TODO uninstall
