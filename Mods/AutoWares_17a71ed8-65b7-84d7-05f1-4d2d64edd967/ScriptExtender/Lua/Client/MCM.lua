@@ -5,8 +5,8 @@ local function GetCurrentMessage()
     return message
 end
 
+local channel = "AW_NET_Action"
 local function SendMsg(msg)
-    local channel = "AW_NET_SW_Action"
     Ext.ClientNet.PostMessageToServer(channel, Ext.Json.Stringify(msg))
 end
 
@@ -36,4 +36,13 @@ Mods.BG3MCM.IMGUIAPI:InsertModMenuTab(ModuleUUID, "Presets", function(tabHeader)
     end
 end)
 
---TODO uninstall
+Mods.BG3MCM.IMGUIAPI:InsertModMenuTab(ModuleUUID, "Misc", function(tabHeader)
+    local RottenPreset = tabHeader:AddButton("Uninstall")
+    RottenPreset.OnClick = function()
+        if Ext.Net.IsHost() == false then
+            return
+        end
+        local message = {uninstall = true}
+        SendMsg(message)
+    end
+end)

@@ -1,5 +1,5 @@
+local channel = "AW_NET_Action"
 Ext.Events.NetMessage:Subscribe(function(data)
-    local channel = "AW_NET_SW_Action"
     if data.Channel == channel then
         --Parse the string back into a table if it was stringified
         local message = Ext.Json.Parse(data.Payload)
@@ -7,6 +7,11 @@ Ext.Events.NetMessage:Subscribe(function(data)
             return
         end
         --Do whatever you want with the data in the client context
+
+        if message.uninstall ~= nil then
+            AW_Uninstall()
+            return
+        end
 
         local preset = message.preset
         local clean = 1
@@ -32,3 +37,23 @@ Ext.Events.NetMessage:Subscribe(function(data)
     end
 end)
 
+Ext.ModEvents.BG3MCM["MCM_Setting_Saved"]:Subscribe(function(payload)
+    if not payload or payload.modUUID ~= ModuleUUID or not payload.settingId then
+        return
+    end
+
+    if payload.settingId == "AW_enable" then
+        -- _D("Setting enable to " .. payload.value)
+        AW_Enable(nil, payload.value)
+    end
+end)
+
+Ext.ModEvents.BG3MCM["MCM_Setting_Saved"]:Subscribe(function(payload)
+    if not payload or payload.modUUID ~= ModuleUUID or not payload.settingId then
+        return
+    end
+
+    if payload.settingId == "AW_show_notification" then
+        AW_ShowGiveBackNotify = payload.value and 1 or 0
+    end
+end)

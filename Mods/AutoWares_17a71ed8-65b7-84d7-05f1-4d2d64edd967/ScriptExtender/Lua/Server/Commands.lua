@@ -24,7 +24,7 @@ Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event)
     end
 end)
 
-local function AW_Uninstall()
+function AW_Uninstall()
     local MagicChest = AW_GetMagicChest()
     RequestDelete(MagicChest)
 end

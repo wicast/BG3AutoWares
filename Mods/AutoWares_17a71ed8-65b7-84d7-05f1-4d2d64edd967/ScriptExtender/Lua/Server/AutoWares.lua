@@ -12,6 +12,14 @@ local bStopCloneDummy = false
 AW_bTrackingWaresChest = true
 AW_GlobalEnabled = true
 
+local function Init()
+    if MCM == nil then
+        return
+    end
+    AW_GlobalEnabled = MCM.Get("AW_Enable")
+    AW_ShowGiveBackNotify = MCM.Get("AW_show_notification") and 1 or 0
+end
+
 local function IsBlackList(_Object)
     local Obj = Ext.Entity.Get(_Object)
     if Obj ~= nil and Obj.ServerItem ~= nil and ( Obj.ServerItem.StoryItem == true or Obj.ServerItem.IsContainer == true )  then
@@ -269,9 +277,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
     end
 end)
 
-
-local TemplateAddQueue = {}
-
+AW_ShowGiveBackNotify = 1
 -- Make a copy when putting into the MagicChest and remove it when move out the MagicChest
 Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTemplate, _Object, _InventoryHolder, _AddType)
     local HolderTemplate = GetTemplate(_InventoryHolder)
@@ -300,7 +306,7 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
         return
     end
 
-    TemplateAddTo(_ObjectTemplate, Owner, amount, 1)
+    TemplateAddTo(_ObjectTemplate, Owner, amount, AW_ShowGiveBackNotify)
 
     TimerLaunch("AW_StartCleanStackAfterNewItemAdded", 999)
 end)
@@ -311,23 +317,6 @@ Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
 
     CleanChestWeight()
 end)
-AW_ShowGiveBackNotify = 1
-Ext.Osiris.RegisterListener("TimerFinished", 1, "after", function (_Event)
-    if _Event ~= "AW_AddToChestOwner" then
-        return
-    end
-    local ItemTemp = getDictFirstVal(TemplateAddQueue)
-    if ItemTemp == nil then
-        return
-    end
-
-    local Owner = GetChestOwner()
-    TemplateAddTo(ItemTemp[1], Owner, ItemTemp[2], AW_ShowGiveBackNotify)
-    _D("add:"..ItemTemp[1].."amount:"..ItemTemp[2])
-    TemplateAddQueue[ItemTemp[1]] = nil
-    TimerLaunch("AW_AddToChestOwner", 10)
-end)
-
 -- Prevent Item Removing from the chest
 Ext.Osiris.RegisterListener("RemovedFrom", 2, "after", function(_Object, _InventoryHolder)
     local HolderTemplate = GetTemplate(_InventoryHolder)
