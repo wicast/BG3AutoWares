@@ -21,7 +21,7 @@
                     <attribute id="Author" type="LSString" value="wicastC"/>
                     <attribute id="CharacterCreationLevelName" type="FixedString" value=""/>
                     <attribute id="Description" type="LSString" value="Automatically set junks to wares on your choice! Server or single player needs install bg3se, client is unnecessary"/>
-                    <attribute id="FileSize" type="uint64" value="127776"/>
+                    <attribute id="FileSize" type="uint64" value="127841"/>
                     <attribute id="Folder" type="LSString" value="AutoWares_17a71ed8-65b7-84d7-05f1-4d2d64edd967"/>
                     <attribute id="LobbyLevelName" type="FixedString" value=""/>
                     <attribute id="MD5" type="LSString" value="99a074ba9f67f1f7fde22c92e63c8910"/>
@@ -32,7 +32,7 @@
                     <attribute id="PublishHandle" type="uint64" value="4574659"/>
                     <attribute id="StartupLevelName" type="FixedString" value=""/>
                     <attribute id="UUID" type="FixedString" value="17a71ed8-65b7-84d7-05f1-4d2d64edd967"/>
-                    <attribute id="Version64" type="int64" value="36028797018964002"/>
+                    <attribute id="Version64" type="int64" value="36028797018964003"/>
                     <children>
                         <node id="PublishVersion">
                             <attribute id="Version64" type="int64" value="144255927717549775"/>
