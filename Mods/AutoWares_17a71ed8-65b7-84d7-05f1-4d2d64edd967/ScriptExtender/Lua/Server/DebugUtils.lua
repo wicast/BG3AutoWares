@@ -99,6 +99,10 @@ local function EnableTrackingRemoved()
     AW_bTrackingWaresChest = false
 end
 
+-- Ext.Osiris.RegisterListener("CastSpell", 5, "after", function (_Caster, _Spell, _SpellType, _SpellElement, _StoryActionID)
+--     _P("_Caster ".._Caster.. " _Spell ".._Spell.. " _SpellType ".._SpellType.. " _SpellElement ".._SpellElement.. " _StoryActionID ".._StoryActionID)
+-- end)
+
 Ext.RegisterConsoleCommand("AWIterInv", IterInvent)
 Ext.RegisterConsoleCommand("AWStoreInv", StoreInvent)
 Ext.RegisterConsoleCommand("AWGetInv", GetInvenStore)

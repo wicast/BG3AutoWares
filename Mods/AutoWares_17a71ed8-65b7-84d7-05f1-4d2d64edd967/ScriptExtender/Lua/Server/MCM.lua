@@ -34,6 +34,22 @@ Ext.Events.NetMessage:Subscribe(function(data)
             AW_LoadWareSample(nil, message.slot)
         end
         -- _D("AW_NET_SW_Action done")
+
+        local cache = message.cache_wares
+        if cache ~= nil then
+            AW_CacheCurrent()
+        end
+
+        local restore_cache = message.restore_cache
+        if restore_cache ~= nil then
+            AW_CacheRestore()
+        end
+
+        local clean_cache = message.clean_cache
+        if clean_cache ~= nil then
+            AW_CleanCache()
+        end
+
     end
 end)
 
@@ -45,12 +61,6 @@ Ext.ModEvents.BG3MCM["MCM_Setting_Saved"]:Subscribe(function(payload)
     if payload.settingId == "AW_enable" then
         -- _D("Setting enable to " .. payload.value)
         AW_Enable(nil, payload.value)
-    end
-end)
-
-Ext.ModEvents.BG3MCM["MCM_Setting_Saved"]:Subscribe(function(payload)
-    if not payload or payload.modUUID ~= ModuleUUID or not payload.settingId then
-        return
     end
 
     if payload.settingId == "AW_show_notification" then

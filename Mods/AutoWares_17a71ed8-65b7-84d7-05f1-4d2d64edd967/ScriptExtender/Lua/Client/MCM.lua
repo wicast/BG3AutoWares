@@ -49,7 +49,34 @@ if Mods.BG3MCM ~= nil then
             SendMsg(message)
         end
     
-        local Tooltip = Uninstall:Tooltip()
-        Tooltip:AddText("Uninstall will remove the cheese chest from the game, then save and reload your game will make the game back to origin")
+        local Tooltip_Uninstall = Uninstall:Tooltip()
+        Tooltip_Uninstall:AddText("Uninstall will remove the cheese chest from the game, then save and reload your game will make the game back to origin")
+
+        local Cache = tabHeader:AddButton("Cache")
+        Cache.OnClick = function()
+            if Ext.Net.IsHost() == false then
+                return
+            end
+            local message = {cache_wares = true}
+            SendMsg(message)
+        end
+
+        local RestoreCache = tabHeader:AddButton("Restore Cache")
+        RestoreCache.OnClick = function()
+            if Ext.Net.IsHost() == false then
+                return
+            end
+            local message = {restore_cache = true}
+            SendMsg(message)
+        end
+
+        local CleanCache = tabHeader:AddButton("Clean Cache")
+        CleanCache.OnClick = function()
+            if Ext.Net.IsHost() == false then
+                return
+            end
+            local message = {clean_cache = true}
+            SendMsg(message)
+        end
     end)
 end

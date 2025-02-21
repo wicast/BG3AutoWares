@@ -107,6 +107,15 @@ function removeExistingValue(tbl, value)
     return false
 end
 
+function checkExisting(tbl, value)
+    for i, v in ipairs(tbl) do
+        if v == value then
+            return true
+        end
+    end
+    return false
+end
+
 function isDictEmpty(t)
     if type(t) ~= "table" then
         return false
@@ -265,7 +274,8 @@ Ext.Osiris.RegisterListener("TemplateAddedTo", 4, "after", function(_ObjectTempl
         if MagicWareChest == nil or IsBlackList(_Object) then
             return
         end
-        if TemplateIsInInventory(_ObjectTemplate, MagicWareChest) ~= nil 
+        if checkExisting(AW_Caches, _ObjectTemplate) == true 
+            or TemplateIsInInventory(_ObjectTemplate, MagicWareChest) ~= nil 
             and TemplateIsInInventory(_ObjectTemplate, MagicWareChest) ~= 0
             and IsInInventoryOf(_Object, MagicWareChest) == 0 
         then

@@ -10,6 +10,7 @@ function AW_SaveWareSample(cmd, slot)
     end
     AW_Slot = slot
     AW_LoadQueue = {}
+    Samples = {}
     Osi.IterateInventory(MagicChest, "AW_SaveWareSample", "AW_SaveWareSample_DONE")
 end
 Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
@@ -136,6 +137,73 @@ function AW_Enable(cmd, switch)
     AW_GlobalEnabled = switch
 end
 
+AW_Caches = {}
+function AW_CacheCurrent()
+    if PersistentVars["Caches"] ~= nil then
+        AW_Caches = PersistentVars["Caches"]
+    else
+        AW_Caches = {}
+    end
+    
+    local MagicChest = AW_GetMagicChest()
+    Osi.IterateInventory(MagicChest, "AW_CacheWareSample", "AW_CacheWareSample_DONE")
+end
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
+    if _Event == "AW_CacheWareSample" then
+        addUniqueValue(AW_Caches, GetTemplate(_Object))
+        RequestDelete(_Object)
+    end
+end)
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
+    if _Event == "AW_CacheWareSample_DONE" then
+        PersistentVars["Caches"] = AW_Caches
+        -- Ext.IO.SaveFile(TemplateFile.."_AW_Cache.json", Ext.DumpExport(AW_Caches))
+    end
+end)
+
+function AW_CacheRestore()
+    -- local SourceFileStr = Ext.IO.LoadFile(TemplateFile.."_AW_Cache.json")
+    -- if SourceFileStr == nil then
+    --     return
+    -- end
+
+    -- AW_Caches = Ext.Json.Parse(SourceFileStr)
+
+    AW_Caches = PersistentVars["Caches"]
+    if AW_Caches == nil then
+        AW_Caches = {}
+    end
+
+    local MagicChest = AW_GetMagicChest()
+    Osi.IterateInventory(MagicChest, "AW_CacheRestoreWareSample", "AW_CacheRestoreWareSample_DONE")
+end
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
+    if _Event == "AW_CacheRestoreWareSample" then
+        addUniqueValue(AW_Caches, GetTemplate(_Object))
+    end
+end)
+Ext.Osiris.RegisterListener("EntityEvent", 2, "after", function(_Object, _Event) 
+    if _Event == "AW_CacheRestoreWareSample_DONE" then
+        AW_LoadQueue = AW_Caches
+        AW_Caches = {}
+        PersistentVars["Caches"] = {}
+        TimerLaunch("AW_LoadWareSample_CleanUp", 0)
+    end
+end)
+local function OnSessionLoaded()
+    AW_Caches = PersistentVars["Caches"]
+    if AW_Caches == nil then
+        AW_Caches = {}
+    end
+    -- Persistent variables are only available after SessionLoaded is triggered!
+    -- _P(PersistentVars['Caches'])
+end
+Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
+
+function AW_CleanCache()
+    PersistentVars["Caches"] = {}
+    AW_Caches = {}
+end
 
 Ext.RegisterConsoleCommand("AWSave", AW_SaveWareSample)
 Ext.RegisterConsoleCommand("AWLoad", AW_LoadWareSample)
