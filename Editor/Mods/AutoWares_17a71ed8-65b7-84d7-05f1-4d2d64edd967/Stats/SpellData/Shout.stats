@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stats stat_object_definition_id="9fd4ac7a-fad7-424f-83df-0893eae93c38">
+  <stat_objects>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="UUID" type="IdTableFieldDefinition" value="ccec95f2-c6c7-412a-80ac-3dff9292ef55" />
+        <field name="Name" type="NameTableFieldDefinition" value="AW_Cache" />
+        <field name="Icon" type="StringTableFieldDefinition" value="statIcons_Reduced" />
+        <field name="DisplayName" type="TranslatedStringTableFieldDefinition" handle="hccd40c11g43e1g41d4g0405g8811b34470f1" version="1" />
+        <field name="Description" type="TranslatedStringTableFieldDefinition" handle="h66b423b0g8ceeg8d8fg8e45gf1730103550f" version="2" />
+        <field name="CastTextEvent" type="StringTableFieldDefinition" value="Cast" />
+        <field name="SpellAnimation" type="CastAnimationsTableFieldDefinition" value="414bbf02-2918-4f01-83fb-1ddc7a588d88,,;,,;4156d364-d2c0-4a01-908c-3552f78f434d,,;6f0a29b6-0ae8-4ebf-a1e4-8069c4a6ad16,,;0c5dcc83-fa78-41da-b6a5-440b5ea30936,,;,,;bea988a0-2ec5-40d8-a67e-ffbd7454bc53,,;,,;,," />
+        <field name="VerbalIntent" type="EnumerationTableFieldDefinition" value="Utility" enumeration_type_name="VerbalIntent" version="1" />
+        <field name="TargetConditions" type="StringTableFieldDefinition" value="Self()" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="UUID" type="IdTableFieldDefinition" value="150f5035-e760-4bb1-a2b7-569838033309" />
+        <field name="Name" type="NameTableFieldDefinition" value="AW_Restore_Cache" />
+        <field name="TargetConditions" type="StringTableFieldDefinition" value="Self()" />
+        <field name="Icon" type="StringTableFieldDefinition" value="Status_Positive" />
+        <field name="DisplayName" type="TranslatedStringTableFieldDefinition" handle="h2fb1ab81g1b63gb5e6g56b8g869043136112" version="1" />
+        <field name="Description" type="TranslatedStringTableFieldDefinition" handle="h940a205cg72d7gf11cg2bf9g22fe6d9f3cbf" version="1" />
+        <field name="CastTextEvent" type="StringTableFieldDefinition" value="Cast" />
+        <field name="SpellAnimation" type="CastAnimationsTableFieldDefinition" value="8b8bb757-21ce-4e02-a2f3-97d55cf2f90b,,;,,;35b644cf-5c13-4407-9dc1-23bf4309216e,,;823e3ddf-c670-41ef-b7b4-9f4a4e38300b,,;7bb52cd4-0b1c-4926-9165-fa92b75876a3,,;,,;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;,,;,," />
+        <field name="VerbalIntent" type="EnumerationTableFieldDefinition" value="Utility" enumeration_type_name="VerbalIntent" version="1" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="UUID" type="IdTableFieldDefinition" value="cd76bc52-150d-494e-beb5-77228c29d0d7" />
+        <field name="Name" type="NameTableFieldDefinition" value="AW_Clean_Cache" />
+        <field name="TargetConditions" type="StringTableFieldDefinition" value="Self()" />
+        <field name="Icon" type="StringTableFieldDefinition" value="Status_Poisoned" />
+        <field name="DisplayName" type="TranslatedStringTableFieldDefinition" handle="hc3c34b46ga292gb0b3gbb37g8a0ceb9b9f25" version="1" />
+        <field name="Description" type="TranslatedStringTableFieldDefinition" handle="h5d4f7edbga30bg210cgb427ga9933d678d1f" version="1" />
+        <field name="CastTextEvent" type="StringTableFieldDefinition" value="Cast" />
+        <field name="SpellAnimation" type="CastAnimationsTableFieldDefinition" value="8b8bb757-21ce-4e02-a2f3-97d55cf2f90b,,;,,;35b644cf-5c13-4407-9dc1-23bf4309216e,,;823e3ddf-c670-41ef-b7b4-9f4a4e38300b,,;7bb52cd4-0b1c-4926-9165-fa92b75876a3,,;,,;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;,,;,," />
+        <field name="VerbalIntent" type="EnumerationTableFieldDefinition" value="Utility" enumeration_type_name="VerbalIntent" version="1" />
+      </fields>
+    </stat_object>
+  </stat_objects>
+</stats>

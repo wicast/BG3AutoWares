@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<stats stat_object_definition_id="68e50044-f0bd-499d-94ad-7aa52f7abe18">
+  <stat_objects>
+    <stat_object is_substat="false">
+      <fields>
+        <field name="UUID" type="IdTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="Name" type="NameTableFieldDefinition" value="CommonPlayerActions" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Projectile_Jump" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="0cbfd935-cef1-4729-9c1a-46bb8e8c6288" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_0" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Target_Dip" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="d603e54d-8cf4-47d7-890d-f5952094246e" />
+        <field name="Name" type="NameTableFieldDefinition" value="CommonPlayerActions_substat" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Shout_Hide" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="9ce0b4d2-5159-4a46-b3c4-c88183a62de2" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_1" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Shout_Hide" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="159ca218-eb6f-400f-b280-578c628cd090" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_2" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Target_Shove" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="fb9fd7de-8653-4270-bb75-2d0582e16547" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_3" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Throw_Throw" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="48dfc8f0-a342-4b93-951c-9aae60312f95" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_4" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Throw_ImprovisedWeapon" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="ade225f8-9004-437c-9c01-e8e3a45f06e1" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_5" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Shout_Dash" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="4650fbb1-6267-4696-bb57-563e67f9f923" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_6" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Target_Help" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="b8bc8e28-edf2-4c20-8acf-0f7e1d3c6e8b" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_7" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Shout_Disengage" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="1c74a9f8-36a5-41f1-b00b-5c2434cdcf55" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_8" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Shout_AW_Cache" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="f22a278d-af89-4d8c-8c9e-14b11ca107fa" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_9" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Shout_AW_Restore_Cache" />
+      </fields>
+    </stat_object>
+    <stat_object is_substat="true">
+      <fields>
+        <field name="Using" type="BaseClassTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33" />
+        <field name="UUID" type="IdTableFieldDefinition" value="4cfe153e-41e3-4bc0-b2ac-8e12c771449c" />
+        <field name="Name" type="NameTableFieldDefinition" value="87b0ec0b-9a8c-4c03-94c6-a239332a0c33_substat_10" />
+        <field name="Spells" type="StatReferenceTableFieldDefinition" value="Shout_AW_Clean_Cache" />
+      </fields>
+    </stat_object>
+  </stat_objects>
+</stats>

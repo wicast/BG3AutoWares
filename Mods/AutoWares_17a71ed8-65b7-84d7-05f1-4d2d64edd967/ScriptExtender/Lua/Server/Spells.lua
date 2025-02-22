@@ -16,7 +16,7 @@ end)
 Ext.Osiris.RegisterListener("CastSpell", 5, "after", function (_Caster, _Spell, _SpellType, _SpellElement, _StoryActionID)
     -- TODO replace with my spell
     -- if _Spell ~= "Target_Guidance" then
-    if _Spell ~= "Shout_AW_RestoreCache" then
+    if _Spell ~= "Shout_AW_Restore_Cache" then
         return
     end
 
@@ -31,7 +31,7 @@ end)
 Ext.Osiris.RegisterListener("CastSpell", 5, "after", function (_Caster, _Spell, _SpellType, _SpellElement, _StoryActionID)
     -- TODO replace with my spell
     -- if _Spell ~= "Target_Resistance" then
-    if _Spell ~= "Shout_AW_CleanCache" then
+    if _Spell ~= "Shout_AW_Clean_Cache" then
         return
     end
 
